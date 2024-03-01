@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:quiz_app/home_screen.dart';
 import 'package:quiz_app/questions_screen.dart';
 
@@ -11,22 +10,33 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  Widget? activeScreen;
+  var activeScreen = "home-screen";
 
-  @override
-  void initState() {
-    activeScreen = HomeScreen(switchScreen);
-    super.initState();
-  }
+  // Adding the switchScreen function. #1 way
+  // @override
+  // void initState() {
+  //   activeScreen = HomeScreen(switchScreen);
+  //   super.initState();
+  // }
 
   void switchScreen() {
     setState(() {
-      activeScreen = QuestionsScreen();
+      activeScreen = "questions-screen";
     });
   }
 
   @override
   Widget build(context) {
+    // final screenWidget = activeScreen == 'home-screen'
+    //     ? HomeScreen(switchScreen) // if true
+    //     : const QuestionsScreen(); // if false
+
+    Widget screenWidget = HomeScreen(switchScreen);
+
+    if (activeScreen == "questions-screen") {
+      screenWidget = const QuestionsScreen();
+    }
+
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -34,10 +44,13 @@ class _QuizState extends State<Quiz> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.deepPurple.shade800, Colors.purple.shade700],
+              colors: [
+                Colors.deepPurple.shade900,
+                Colors.purple.shade600,
+              ],
             ),
           ),
-          child: activeScreen,
+          child: screenWidget,
         ),
       ),
     );
